@@ -1,0 +1,41 @@
+services:
+  - type: web
+    name: gastro-bot-prototype
+    runtime: python
+    plan: starter
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn app.main:app --host 0.0.0.0 --port $PORT
+    autoDeploy: true
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.10.14
+
+      - key: APP_NAME
+        value: Gastro Bot
+      - key: APP_ENV
+        value: production
+      - key: APP_HOST
+        value: 0.0.0.0
+      - key: DEBUG
+        value: "false"
+
+      - key: PUBLIC_BASE_URL
+        sync: false
+
+      - key: REPLICATE_API_TOKEN
+        sync: false
+
+      - key: REPLICATE_HERO_MODEL
+        value: black-forest-labs/flux-kontext-pro
+
+      - key: REPLICATE_VIDEO_MODEL
+        value: wavespeedai/wan-2.1-i2v-720p
+
+      - key: VIDEO_ENDCARD_HEADLINE
+        value: Sie sind herzlich willkommen
+
+      - key: VIDEO_ENDCARD_SUBLINE
+        value: Genuss, der Lust auf mehr macht
+
+      - key: VIDEO_LOGO_PATH
+        value: static/branding/logo.png
