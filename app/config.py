@@ -17,6 +17,8 @@ class Settings(BaseSettings):
     VIDEO_ENDCARD_SUBLINE: str = "Genuss, der Lust auf mehr macht"
     VIDEO_LOGO_PATH: str = "static/branding/logo.png"
 
+    REDIS_URL: str = ""
+
     model_config = SettingsConfigDict(
         env_file=".env",
         extra="ignore",
