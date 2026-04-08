@@ -1,11 +1,11 @@
 {% extends "base.html" %}
 
-{% block title %}Caption Builder{% endblock %}
+{% block title %}Async Content Builder{% endblock %}
 
 {% block content %}
 <section class="hero">
-    <h1>Content Paket Builder</h1>
-    <p>Lade ein Produktfoto hoch und erhalte Hero-Bild, Video und fertige Social-Media-Texte.</p>
+    <h1>Async Content Builder</h1>
+    <p>Lade ein Produktfoto hoch. Das Ergebnis wird im Hintergrund erzeugt und automatisch geladen.</p>
 
     <form action="/upload" method="post" enctype="multipart/form-data" class="upload-form">
         <div class="form-grid">
@@ -70,76 +70,70 @@
     </div>
     {% endif %}
 
-    {% if result %}
-    <div class="card result-card">
-        <h2>Hero Bild-Ergebnis</h2>
-        <p>{{ result.detail }}</p>
-
-        <div class="stats-grid">
-            <div class="stat-box">
-                <strong>Original:</strong><br>
-                {{ result.original_width }} × {{ result.original_height }} px
-            </div>
-            <div class="stat-box">
-                <strong>Hero:</strong><br>
-                {{ result.enhanced_width }} × {{ result.enhanced_height }} px
-            </div>
-        </div>
-
-        <div class="image-grid">
-            <div class="image-box">
-                <h3>Original</h3>
-                <img src="{{ result.original_image }}" alt="Originalbild">
-            </div>
-            <div class="image-box">
-                <h3>Hero Motiv</h3>
-                <img src="{{ result.enhanced_image }}" alt="Hero Motiv">
-            </div>
-        </div>
+    {% if job_id %}
+    <div class="card" id="jobCard" data-job-id="{{ job_id }}">
+        <h2>Verarbeitung läuft</h2>
+        <p><strong>Job-ID:</strong> {{ job_id }}</p>
+        <p id="jobStatus">Status: queued</p>
+        <p id="jobStep">Schritt: Waiting to start</p>
     </div>
-    {% endif %}
 
-    {% if video_result %}
-    <div class="card video-card">
-        <h2>Video-Ergebnis</h2>
-        <p>{{ video_result.detail }}</p>
+    <div id="resultArea" style="display:none;">
+        <div class="card result-card">
+            <h2>Hero Bild-Ergebnis</h2>
+            <div class="stats-grid">
+                <div class="stat-box">
+                    <strong>Original:</strong><br>
+                    <span id="origDim"></span>
+                </div>
+                <div class="stat-box">
+                    <strong>Hero:</strong><br>
+                    <span id="heroDim"></span>
+                </div>
+            </div>
 
-        <div class="video-preview">
-            <video controls autoplay muted loop playsinline>
-                <source src="{{ video_result.video }}" type="video/mp4">
-                Dein Browser unterstützt das Video-Tag nicht.
-            </video>
+            <div class="image-grid">
+                <div class="image-box">
+                    <h3>Original</h3>
+                    <img id="origImg" src="" alt="Originalbild">
+                </div>
+                <div class="image-box">
+                    <h3>Hero Motiv</h3>
+                    <img id="heroImg" src="" alt="Hero Motiv">
+                </div>
+            </div>
         </div>
 
-        <div class="video-links">
-            <a href="{{ video_result.video }}" target="_blank" class="open-link">Video in neuem Tab öffnen</a>
+        <div class="card video-card">
+            <h2>Video-Ergebnis</h2>
+            <p id="videoMeta"></p>
+
+            <div class="video-preview">
+                <video id="videoPlayer" controls autoplay muted loop playsinline>
+                    <source id="videoSource" src="" type="video/mp4">
+                </video>
+            </div>
         </div>
-    </div>
-    {% endif %}
 
-    {% if caption_result %}
-    <div class="card caption-card">
-        <h2>Caption Paket</h2>
-
-        <div class="caption-grid">
-            <div class="caption-box">
-                <h3>Instagram Caption</h3>
-                <textarea readonly>{{ caption_result.instagram_caption }}</textarea>
-            </div>
-
-            <div class="caption-box">
-                <h3>Hashtags</h3>
-                <textarea readonly>{{ caption_result.hashtags }}</textarea>
-            </div>
-
-            <div class="caption-box">
-                <h3>Story Text</h3>
-                <textarea readonly>{{ caption_result.story_text }}</textarea>
-            </div>
-
-            <div class="caption-box">
-                <h3>Promo Text</h3>
-                <textarea readonly>{{ caption_result.promo_text }}</textarea>
+        <div class="card caption-card">
+            <h2>Caption Paket</h2>
+            <div class="caption-grid">
+                <div class="caption-box">
+                    <h3>Instagram Caption</h3>
+                    <textarea id="capInstagram" readonly></textarea>
+                </div>
+                <div class="caption-box">
+                    <h3>Hashtags</h3>
+                    <textarea id="capHashtags" readonly></textarea>
+                </div>
+                <div class="caption-box">
+                    <h3>Story Text</h3>
+                    <textarea id="capStory" readonly></textarea>
+                </div>
+                <div class="caption-box">
+                    <h3>Promo Text</h3>
+                    <textarea id="capPromo" readonly></textarea>
+                </div>
             </div>
         </div>
     </div>
