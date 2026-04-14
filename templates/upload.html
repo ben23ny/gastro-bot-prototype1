@@ -1,0 +1,148 @@
+{% extends "base.html" %}
+
+{% block title %}Caption Builder{% endblock %}
+
+{% block content %}
+<section class="hero">
+    <h1>Content Paket Builder</h1>
+    <p>Lade ein Produktfoto hoch und erhalte Hero-Bild, Video und fertige Social-Media-Texte.</p>
+
+    <form action="/upload" method="post" enctype="multipart/form-data" class="upload-form">
+        <div class="form-grid">
+            <div class="field">
+                <label for="file">Produktbild</label>
+                <input id="file" type="file" name="file" accept=".jpg,.jpeg,.png,.webp" required>
+            </div>
+
+            <div class="field">
+                <label for="logo">Eigenes Logo (optional)</label>
+                <input id="logo" type="file" name="logo" accept=".png,.jpg,.jpeg,.webp">
+            </div>
+
+            <div class="field">
+                <label for="headline">Headline</label>
+                <input id="headline" type="text" name="headline" value="Sie sind herzlich willkommen">
+            </div>
+
+            <div class="field">
+                <label for="subline">Subline</label>
+                <input id="subline" type="text" name="subline" value="Genuss, der Lust auf mehr macht">
+            </div>
+
+            <div class="field">
+                <label for="style_profile">Bildstil</label>
+                <select id="style_profile" name="style_profile">
+                    <option value="luxury" selected>Luxury</option>
+                    <option value="social">Social</option>
+                    <option value="fresh">Fresh</option>
+                    <option value="dark">Dark</option>
+                </select>
+            </div>
+
+            <div class="field">
+                <label for="video_mode">Video Modus</label>
+                <select id="video_mode" name="video_mode">
+                    <option value="eco" selected>Eco (günstig)</option>
+                    <option value="pro">Pro (3s KI-Video)</option>
+                    <option value="premium">Premium (5s KI-Video)</option>
+                </select>
+            </div>
+
+            <div class="field">
+                <label for="video_style">Video Effekt</label>
+                <select id="video_style" name="video_style">
+                    <option value="auto" selected>Auto</option>
+                    <option value="cinematic_push">Cinematic Push</option>
+                    <option value="soft_float">Soft Float</option>
+                    <option value="dramatic_focus">Dramatic Focus</option>
+                    <option value="luxury_glow">Luxury Glow</option>
+                </select>
+            </div>
+        </div>
+
+        <button type="submit">Content Paket erzeugen</button>
+    </form>
+
+    {% if error %}
+    <div class="card error-card">
+        <h2>Fehler</h2>
+        <p>{{ error }}</p>
+    </div>
+    {% endif %}
+
+    {% if result %}
+    <div class="card result-card">
+        <h2>Hero Bild-Ergebnis</h2>
+        <p>{{ result.detail }}</p>
+
+        <div class="stats-grid">
+            <div class="stat-box">
+                <strong>Original:</strong><br>
+                {{ result.original_width }} × {{ result.original_height }} px
+            </div>
+            <div class="stat-box">
+                <strong>Hero:</strong><br>
+                {{ result.enhanced_width }} × {{ result.enhanced_height }} px
+            </div>
+        </div>
+
+        <div class="image-grid">
+            <div class="image-box">
+                <h3>Original</h3>
+                <img src="{{ result.original_image }}" alt="Originalbild">
+            </div>
+            <div class="image-box">
+                <h3>Hero Motiv</h3>
+                <img src="{{ result.enhanced_image }}" alt="Hero Motiv">
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+    {% if video_result %}
+    <div class="card video-card">
+        <h2>Video-Ergebnis</h2>
+        <p>{{ video_result.detail }}</p>
+
+        <div class="video-preview">
+            <video controls autoplay muted loop playsinline>
+                <source src="{{ video_result.video }}" type="video/mp4">
+                Dein Browser unterstützt das Video-Tag nicht.
+            </video>
+        </div>
+
+        <div class="video-links">
+            <a href="{{ video_result.video }}" target="_blank" class="open-link">Video in neuem Tab öffnen</a>
+        </div>
+    </div>
+    {% endif %}
+
+    {% if caption_result %}
+    <div class="card caption-card">
+        <h2>Caption Paket</h2>
+
+        <div class="caption-grid">
+            <div class="caption-box">
+                <h3>Instagram Caption</h3>
+                <textarea readonly>{{ caption_result.instagram_caption }}</textarea>
+            </div>
+
+            <div class="caption-box">
+                <h3>Hashtags</h3>
+                <textarea readonly>{{ caption_result.hashtags }}</textarea>
+            </div>
+
+            <div class="caption-box">
+                <h3>Story Text</h3>
+                <textarea readonly>{{ caption_result.story_text }}</textarea>
+            </div>
+
+            <div class="caption-box">
+                <h3>Promo Text</h3>
+                <textarea readonly>{{ caption_result.promo_text }}</textarea>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+</section>
+{% endblock %}
