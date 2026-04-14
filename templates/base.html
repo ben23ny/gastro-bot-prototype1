@@ -1,129 +1,22 @@
-{% extends "base.html" %}
-
-{% block title %}Variant Builder{% endblock %}
-
-{% block content %}
-<section class="hero">
-    <h1>Content Paket Builder</h1>
-    <p>Lade ein Produktfoto hoch und erhalte mehrere Varianten in einem Durchlauf.</p>
-
-    <form action="/upload" method="post" enctype="multipart/form-data" class="upload-form">
-        <div class="form-grid">
-            <div class="field">
-                <label for="file">Produktbild</label>
-                <input id="file" type="file" name="file" accept=".jpg,.jpeg,.png,.webp" required>
-            </div>
-
-            <div class="field">
-                <label for="logo">Eigenes Logo (optional)</label>
-                <input id="logo" type="file" name="logo" accept=".png,.jpg,.jpeg,.webp">
-            </div>
-
-            <div class="field">
-                <label for="headline">Headline</label>
-                <input id="headline" type="text" name="headline" value="Sie sind herzlich willkommen">
-            </div>
-
-            <div class="field">
-                <label for="subline">Subline</label>
-                <input id="subline" type="text" name="subline" value="Genuss, der Lust auf mehr macht">
-            </div>
-
-            <div class="field">
-                <label for="style_profile">Bildstil</label>
-                <select id="style_profile" name="style_profile">
-                    <option value="luxury" selected>Luxury</option>
-                    <option value="social">Social</option>
-                    <option value="fresh">Fresh</option>
-                    <option value="dark">Dark</option>
-                </select>
-            </div>
-
-            <div class="field">
-                <label for="video_mode">Video Modus</label>
-                <select id="video_mode" name="video_mode">
-                    <option value="eco" selected>Eco (günstig)</option>
-                    <option value="pro">Pro (3s KI-Video)</option>
-                    <option value="premium">Premium (5s KI-Video)</option>
-                </select>
-            </div>
-
-            <div class="field">
-                <label for="video_style">Basis-Effekt</label>
-                <select id="video_style" name="video_style">
-                    <option value="auto" selected>Auto</option>
-                    <option value="cinematic_push">Cinematic Push</option>
-                    <option value="soft_float">Soft Float</option>
-                    <option value="dramatic_focus">Dramatic Focus</option>
-                    <option value="luxury_glow">Luxury Glow</option>
-                </select>
-            </div>
-
-            <div class="field">
-                <label for="variant_count">Anzahl Varianten</label>
-                <select id="variant_count" name="variant_count">
-                    <option value="1" selected>1</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
-                </select>
-            </div>
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Gastro Bot{% endblock %}</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+    <header class="site-header">
+        <div class="container">
+            <div class="logo">Gastro Bot</div>
         </div>
+    </header>
 
-        <button type="submit">Variantenpaket erzeugen</button>
-    </form>
+    <main class="container">
+        {% block content %}{% endblock %}
+    </main>
 
-    {% if error %}
-    <div class="card error-card">
-        <h2>Fehler</h2>
-        <p>{{ error }}</p>
-    </div>
-    {% endif %}
-
-    {% if job_id %}
-    <div class="card" id="jobCard" data-job-id="{{ job_id }}">
-        <h2>Verarbeitung läuft</h2>
-        <p><strong>Job-ID:</strong> {{ job_id }}</p>
-
-        <div class="progress-wrap">
-            <div class="progress-meta">
-                <span id="jobStatus">Status: queued</span>
-                <span id="jobProgressText">0%</span>
-            </div>
-
-            <div class="progress-bar">
-                <div class="progress-bar-fill" id="jobProgressBar"></div>
-            </div>
-        </div>
-
-        <p id="jobStep">Schritt: Job wurde angelegt</p>
-        <p id="jobMessage">Die Verarbeitung startet in wenigen Sekunden.</p>
-        <div id="jobErrorBox" class="error-inline" style="display:none;"></div>
-    </div>
-
-    <div id="resultArea" style="display:none;">
-        <div class="card result-card">
-            <h2>Originalbild</h2>
-            <div class="stats-grid">
-                <div class="stat-box">
-                    <strong>Original:</strong><br>
-                    <span id="origDim"></span>
-                </div>
-                <div class="stat-box">
-                    <strong>Varianten:</strong><br>
-                    <span id="variantCountText"></span>
-                </div>
-            </div>
-
-            <div class="image-grid">
-                <div class="image-box">
-                    <h3>Original</h3>
-                    <img id="origImg" src="" alt="Originalbild">
-                </div>
-            </div>
-        </div>
-
-        <div id="variantsContainer"></div>
-    </div>
-    {% endif %}
-</section>
-{% endblock %}
+    <script src="/static/js/main.js"></script>
+</body>
+</html>
