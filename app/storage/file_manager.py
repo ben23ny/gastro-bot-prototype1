@@ -97,7 +97,10 @@ def save_remote_video(url: str, prefix: str = "video_", suffix: str = ".mp4") ->
 
 
 def to_public_path(file_path: str) -> str:
-    return "/" + file_path.replace("\\", "/")
+    normalized = str(Path(file_path)).replace("\\", "/")
+    if normalized.startswith("static/"):
+        return "/" + normalized
+    return "/static/uploads/" + Path(normalized).name
 
 
 def get_image_dimensions(file_path: str) -> tuple[int, int]:
